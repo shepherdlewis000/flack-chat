@@ -1,7 +1,6 @@
 let socket; 
 let rooms = [];
 let messages = []
-let room = ""
 
 /**************************
    FUNCTION createRoom: onsubmit listener for room form
@@ -32,13 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
    socket.on('connect', () => {
 		console.log("socket on connect");
 		if(localStorage.username){
-				
+         socket.emit("set username", localStorage.username);			
+			changeRooms("general");			
 			socket.emit("set username", localStorage.username);    		    		
     		document.querySelector("#welcome").innerHTML = "Welcome " + localStorage.username;
 			console.log("username set from localStorage to:" + localStorage.username);
 			document.querySelector('#usernameLabel').innerHTML = "Change username";
 			
-			socket.emit("get rooms");
+			socket.emit("get rooms");		
     	}
     
     	// username has never been set so prompt
@@ -54,33 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
     			}
     	}
     	
+      });
    });
-   socket.on('receive rooms', data => {
+  	
+  	socket.on('receive rooms', data => {
 		rooms = [];  		
   		rooms = rooms.concat(data);
   		console.log("recieved rooms: " + data);
   		console.log("saved rooms as: " + rooms);
-  		
-  		if(localStorage.currentRoom){
-                     
-            // CHANGE TO ONLY IF CURRENTROOM ACTUALLY EXISTS (SERVER RESTART, ETC) OR 
-            // NEED TO CREATE ROOM IF IT"S NOT STILL ALIVE
-            console.log("ROOMS ARE: " + rooms);
-            console.log("Found room in localStorage : " + localStorage.currentRoom);            
-                        
-            if(!rooms.includes(localStorage.currentRoom)){
-               console.log("Need to create room: " + localStorage.currentRoom);
-               document.getElementById("newRoom").value = localStorage.currentRoom;
-               console.log("document.getElementByID-newRoom is: " + document.getElementById("newRoom"));               
-               createRoom();            
-            } 
-            
-            console.log("found current room so joining room: " + localStorage.currentRoom);            
-            changeRooms(localStorage.currentRoom);
-         }
-         else{
-            changeRooms("general");         
-         }
 		setupRoomButtons();
   	});
   	
@@ -94,12 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
       for(let i=0; i<messages.length; i++){
          console.log("Entered loop with message: " + messages[i]);
-         document.querySelector('#messages').innerHTML += '<p>' + messages[i] + '</p>';
-         // NOT PUTTING PARAGRAPH BREAKS      
+         document.querySelector('#messages').innerHTML += '<p>' + messages[i] + '</p>';      
       }
-      // as per jfiddle.net/KGfG2      
-      $('.box').scrollTop($('.box')[0].scrollHeight);
-      
       //document.querySelector('#messages').innerHTML = messages;    	   
   	});
   	
@@ -112,10 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
    socket.on('announce room leave', message => {
       console.log("socket.rooms: " + socket.rooms);
       document.querySelector('#joinMessage').innerHTML = message;
-   });   
-  	
-});
-  	 	
+   });
+   
 //});
 
 function setUsername(){
@@ -124,26 +99,9 @@ function setUsername(){
    document.querySelector('#username').value = '';	
 	socket.emit("set username", localStorage.username);
 	
-	if(localStorage.currentRoom){
-	   console.log("found currRoom in localStorage: " + localStorage.currentRoom);
-      changeRooms(localStorage.currentRoom);	
-	}
-	else{
-      localStorage.setItem('currentRoom', 'general');
-      changeRooms("general");	
-	}
-	document.querySelector('#welcome').innerHTML = "Welcome " + localStorage.username;
-	
-	/* set back to room general
+	// set back to room general
 	localStorage.setItem('currentRoom', 'general');
-	changeRooms("general");
 	document.querySelector("#welcome").innerHTML = "Welcome " + localStorage.username;
-   */
-   
-   // HAD TO REVERT SOME STUFF
-   //changeRooms(localStorage.currentRoom);
-   //document.querySelector("#welcome").innerHTML = "Welcome " + localStorage.username;
-   
 	console.log("username set to:" + localStorage.username);
 	console.log("current room: " + localStorage.currentRoom);
 	return false;
@@ -155,9 +113,6 @@ function changeRooms(room){
 	localStorage.currentRoom = room;
 	document.querySelector('#current-room').innerHTML = "Current room: " + localStorage.currentRoom;
 	socket.emit("change rooms", room);
-	
-   // ADDED BELOW TO TRY AND GET MESSAGE LIST REFRESH	
-	//document.location.reload();
 }
 
 function submitMessage(message){
@@ -182,15 +137,12 @@ function setupRoomButtons(){
 	for(let room of rooms){
 		const mybut = document.createElement('button');
 		//on_off_switch.className = 'switch demo3'
-		
-      // BELOW CAN BE ELIMINATED BC ACTIVE NO LONGER NEEDED		
 		if(room == localStorage.currentRoom){
-			//console.log("This button is current room setting active: " + room);
-			//mybut.className = "btn-primary group-buttons active";
-			mybut.className = "btn-primary group-buttons";
+			console.log("This button is current room setting active: " + room);
+			mybut.className = "group-buttons active";
 		}
 		else{		
-			mybut.className = "btn-primary group-buttons";
+			mybut.className = "group-buttons";
 		}		
 		mybut.innerHTML = room;
 		//mybut.data-room = room;

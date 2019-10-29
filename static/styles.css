@@ -1,0 +1,14 @@
+.messageContainer {
+   height: 100px;
+   overflow: auto;
+   /* display: flex;
+   /*flex-direction: column-reverse;
+   */
+}
+
+.box{
+   height: 100px;
+   display: block;
+   overflow:scroll;
+}
+
