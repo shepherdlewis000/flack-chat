@@ -21,26 +21,39 @@
       <div class="container">
          <div class="row">
             <div class="col-4">
-               <!-- <h4 id="welcome"></h4> -->
+               <!-- <h4 id="welcome"></h4> -->        
                <p id="welcome"></p>
+                  <a id="changeUsernameLink" onclick="showUsernameForm()" href="#">Change username</a>
+                  <a id="changeRoomLink" onclick="showRoomForm()" href="#">Create room</a>            
                
-               <form id="usernamef" class="form-inline" onsubmit="setUsername(); return false;">
+               
+               <div id="usernameFormDiv">
+               <form id="usernamef" onsubmit="setUsername(); return false;">
                <div class="form-group">
+                 <!-- <a id="cancelNameForm" onclick="hideUsernameForm()" href="#">Cancel</a> -->
     			     <label for="username" id="usernameLabel">Username</label>
-    			     <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Enter username">
+    			     <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder=" Enter username">
     			     <!-- <small id="usernameHelp" class="form-text text-muted">Please enter a username.</small> -->
+    			     
   			      </div>
   			      </form>
-  			      <form id="newroomf" class="form-inline" onsubmit="createRoom(newRoom); return false;">
+  			      </div>
+  			      
+  			      <div id="newRoomDiv">
+  			      <form id="newroomf" onsubmit="createRoom(newRoom); return false;">
   			      <div class="form-group">
                   <label for="newRoom" id="newRoomLabel">Create room</label>
                   <input type="text" class="form-control" id="newRoom" aria-describedby="newRoomHelp" placeholder="Name of new room">
-                  <!-- <small id="newRoomHelp" class="form-text text-muted">Enter name of room to create.</small> -->   			
+                  <!-- <small id="newRoomHelp" class="form-text text-muted">Enter name of room to create.</small> -->
+                  <!-- <br><a id="cancelRoomForm" onclick="hideRoomForm()" href="#">Cancel</a> -->	
   			      </div>
   			      </form>
+  			      </div>
   			
-  			       <div id="current-room"></div>
+  			       <p><div id="current-room"></div></p>
+                <span class="badge badge-secondary">Available rooms</span>  			       
   			       <div id="roomButtons"></div>
+  			       
   			       <div id="joinMessage"></div>
               </div> <!-- end div class col-4 -->
             

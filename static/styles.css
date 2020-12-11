@@ -1,5 +1,5 @@
 .messageContainer {
-   height: 100px;
+   height: 400px;
    overflow: auto;
    /* display: flex;
    /*flex-direction: column-reverse;
@@ -7,8 +7,11 @@
 }
 
 .box{
-   height: 100px;
+   height: 400px;
    display: block;
    overflow:scroll;
+   background-color: AliceBlue;
 }
-
+#changeUsername{
+   
+}

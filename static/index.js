@@ -7,7 +7,7 @@ let room = ""
    FUNCTION createRoom: onsubmit listener for room form
 *///////////
 function createRoom(){
-   
+   hideRoomForm();
    room = document.getElementById("newRoom").value
    document.getElementById('newRoom').value='';
    console.log("createRoom CALLED with room: " + room);
@@ -23,6 +23,33 @@ function createRoom(){
    return false;
 }
 
+function showUsernameForm(){
+   document.getElementById("usernameFormDiv").style.display = "block";
+   document.getElementById("changeUsernameLink").style.display = "none";
+   document.getElementById("changeRoomLink").style.display = "none";      
+}
+
+function hideUsernameForm(){
+   document.getElementById("usernameFormDiv").style.display = "none";
+   document.getElementById("changeUsernameLink").style.display = "block";
+   document.getElementById("changeRoomLink").style.display = "block";
+}
+
+function showRoomForm(){
+   document.getElementById("newRoomDiv").style.display = "block";
+   document.getElementById("changeRoomLink").style.display = "none";
+   document.getElementById("changeUsernameLink").style.display = "none";
+   document.querySelector('#newRoomLabel').innerHTML = "Create room <sub><a id='cancelRoomForm' onclick='hideRoomForm()' href='#'>Cancel</a></sub>"; 
+}
+
+function hideRoomForm(){
+   document.getElementById("newRoomDiv").style.display = "none";
+   document.getElementById("changeRoomLink").style.display = "block";
+   document.getElementById("changeUsernameLink").style.display = "block";
+}
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 	
 	// Connect to websocket
@@ -31,12 +58,21 @@ document.addEventListener('DOMContentLoaded', () => {
    // When connected, configure buttons
    socket.on('connect', () => {
 		console.log("socket on connect");
-		if(localStorage.username){
-				
+
+      // Hide the username & create room forms      
+      //var usernameform = document.getElementById("username");
+      //usernameform.style.display = "none";
+      //var createRoomForm = document.getElementById("newroom");
+      //createRoomForm.style.display = "none";
+      
+      hideUsernameForm();
+      hideRoomForm();
+      
+		if(localStorage.username){	
 			socket.emit("set username", localStorage.username);    		    		
-    		document.querySelector("#welcome").innerHTML = "Welcome " + localStorage.username;
+    		document.querySelector("#welcome").innerHTML = "Welcome " + localStorage.username + " "  + document.querySelector("#welcome").innerHTML;
 			console.log("username set from localStorage to:" + localStorage.username);
-			document.querySelector('#usernameLabel').innerHTML = "Change username";
+			document.querySelector('#usernameLabel').innerHTML = "Change username <sub><a id='cancelNameForm' onclick='hideUsernameForm()' href='#'>Cancel</a></sub>";
 			
 			socket.emit("get rooms");
     	}
@@ -64,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   		if(localStorage.currentRoom){
                      
             // CHANGE TO ONLY IF CURRENTROOM ACTUALLY EXISTS (SERVER RESTART, ETC) OR 
-            // NEED TO CREATE ROOM IF IT"S NOT STILL ALIVE
+            // NEED TO CREATE ROOM IF ITS NOT STILL ALIVE
             console.log("ROOMS ARE: " + rooms);
             console.log("Found room in localStorage : " + localStorage.currentRoom);            
                         
@@ -119,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //});
 
 function setUsername(){
+   hideUsernameForm();
 	console.log("setUsername CALLED");
 	localStorage.username = document.querySelector('#username').value;
    document.querySelector('#username').value = '';	
