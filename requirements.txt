@@ -2,5 +2,8 @@ requests
 os
 json
 gunicorn
+flask
+flask_socketio
+
 
 
