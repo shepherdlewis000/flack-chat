@@ -1,5 +1,7 @@
 This is an simple online messaging service using Flask/Python similar in spirit to Slack (https://slack.com).
 
+DEMO: https://my-flack-chat.herokuapp.com/
+
 Users are able to sign in to the site using a display name, create channels (i.e. chatrooms) to communicate in, as well as see and join existing channels. Once a channel is selected, users are able to send and receive messages with one another in real time.
  
 Features
@@ -20,5 +22,5 @@ Change username: Users are able to change their username once initially set.
 
 Requirements: Python modules requests, os, json, gunicorn
 
-
+BUGS/TODO: Duplicate output of welcome message, spruce up UI styling. As this is a project done a while back and I've moved on to Javascript/Node, I'm not sure when I'll get to it.
 
