@@ -1,5 +1,4 @@
 requests
-json
 gunicorn
 flask
 flask_socketio
