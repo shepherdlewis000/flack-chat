@@ -22,5 +22,5 @@ Change username: Users are able to change their username once initially set.
 
 Requirements: Python modules requests, os, json, gunicorn
 
-BUGS/TODO: Duplicate output of welcome message, spruce up UI styling. As this is a project done a while back and I've moved on to Javascript/Node, I'm not sure when I'll get to it.
+BUGS/TODO: Duplicate output of welcome message being show on Heroku hosting, spruce up UI styling. As this is a project done a while back and I've moved on to Javascript/Node and may not get back to it immediately.
 

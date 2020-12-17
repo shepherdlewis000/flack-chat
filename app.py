@@ -5,11 +5,15 @@ import json
 from flask import Flask, jsonify, render_template, request, session, url_for
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
+# Automatically reload when template files change
+TEMPLATES_AUTO_RELOAD = True
+
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY");
 socketio = SocketIO(app)
 
-rooms = ["general", "second"]
+# rooms = ["general", "second"]
+rooms = ["general"]
 
 # Each group has a list of messages
 messageLists = []

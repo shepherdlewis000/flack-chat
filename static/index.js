@@ -12,13 +12,14 @@ function createRoom(){
    document.getElementById('newRoom').value='';
    console.log("createRoom CALLED with room: " + room);
    if(!rooms.includes(room)){
-      console.log("unique room create");
       socket.emit("create room", room);
       rooms.push(room);
       console.log("rooms are now: " + rooms);   
    }
    else{
-      console.log("Already have a room called that");   
+      console.log("Sorry. Room name already in use :-(");
+      bootbox.alert("Can't create a room that already exists!");
+      
    }
    return false;
 }
@@ -131,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
       for(let i=0; i<messages.length; i++){
          console.log("Entered loop with message: " + messages[i]);
          document.querySelector('#messages').innerHTML += '<p>' + messages[i] + '</p>';
-         // NOT PUTTING PARAGRAPH BREAKS      
       }
       // as per jfiddle.net/KGfG2      
       $('.box').scrollTop($('.box')[0].scrollHeight);
@@ -152,12 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
   	
 });
   	 	
-//});
-
 function setUsername(){
    hideUsernameForm();
+   
+
 	console.log("setUsername CALLED");
-	localStorage.username = document.querySelector('#username').value;
+   localStorage.username = document.querySelector('#username').value;
+   bootbox.alert("Username successfully set to " + localStorage.username + ".");
+
    document.querySelector('#username').value = '';	
 	socket.emit("set username", localStorage.username);
 	
@@ -169,7 +171,7 @@ function setUsername(){
       localStorage.setItem('currentRoom', 'general');
       changeRooms("general");	
 	}
-	document.querySelector('#welcome').innerHTML = "Welcome " + localStorage.username;
+	document.querySelector('#welcome').innerHTML = "<h4>Welcome " + localStorage.username + "</h4>";
 	
 	/* set back to room general
 	localStorage.setItem('currentRoom', 'general');
